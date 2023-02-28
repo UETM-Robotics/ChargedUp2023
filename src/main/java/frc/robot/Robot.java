@@ -18,6 +18,7 @@ import frc.robot.Loops.Looper;
 import frc.robot.Loops.RobotStateEstimator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.CommunicationLED;
 import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.SwerveDriveTrain.DriveControlState;
 import frc.robot.Utilities.Controllers;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   private SwerveDriveTrain dTrain;
   private Intake intake;
   private Lift lift;
+  private CommunicationLED communicationLED;
   private RobotStateEstimator robotStateEstimator;
 
   private AutoModeExecutor autoModeExecutor;
@@ -60,13 +62,14 @@ public class Robot extends TimedRobot {
     dTrain = SwerveDriveTrain.getInstance();
     intake = Intake.getInstance();
     lift = Lift.getInstance();
+    communicationLED = CommunicationLED.getInstance();
 
     dTrain.init();
     dTrain.registerEnabledLoops(mLooper);    
 
     intake.registerEnabledLoops(mLooper);
     lift.registerEnabledLoops(mLooper);
-
+    communicationLED.registerEnabledLoops(mLooper);
 
     mHidController = HIDController.getInstance();
 
