@@ -1,13 +1,12 @@
 public class CommunicationLEDAction implements Action {
     CommunicationLED communicationLED;
-    CommunicationLED.Status status;
+    CommunicationLED.Status status = CommunicationLED.Status.NEUTRAL;
 
     Supplier<Boolean> mButtonGetterMethod;
 
-    public SetCommunicationLEDAction(CommunicationLED.Status status, Supplier<Boolean> buttonGetterMethod) {
+    public CommunicationLEDAction() {
         communicationLED = CommunicationLED.getInstance();
-        mButtonGetterMethod = buttonGetterMethod;
-        this.status = status;
+        communicationLED.updateStatus(false);
     }
 
     @Override
@@ -16,16 +15,11 @@ public class CommunicationLEDAction implements Action {
     }
 
     @Override
-    public void update() {
-    }
+    public void update() {}
 
     @Override
-    public void done() {
-        communicationLED.setStatus(status.NEUTRAL);
-    }
+    public void done() {}
 
     @Override
-    public void start() {
-        communicationLED.setStatus(status.NEUTRAL);
-    }
+    public void start() {}
 }

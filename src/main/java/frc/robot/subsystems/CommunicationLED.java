@@ -70,9 +70,17 @@ public class CommunicationLED extends Subsystem implements CustomSubsystem {
     }
 
     // Define Setters
-    public void setStatus(Status newStatus) {
-        if (currentStatus != newStatus) {
-            currentStatus = newStatus;
+    public void updateStatus(boolean neutral) {
+        if (neutral) {
+            currentStatus = Status.NEUTRAL;
+
+        } else {
+            if (currentStatus != Status.CUBE) {
+                currentStatus = Status.CUBE
+
+            } else if (currentStatus != Status.CONE) {
+                currentStatus = Status.CONE;
+            }
         }
     }
 

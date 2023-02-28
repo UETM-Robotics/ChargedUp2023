@@ -188,6 +188,11 @@ public class HIDController {
 				SmartDashboard.putString("Intake", "Ex");
 		});*/
 
+		registerButtonPressControl(driverController, 4, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new CommunicationLEDAction(), 300, CommunicationLED.getInstance()));
+		});
+
 		registerButtonPressControl(driverController, 1, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
 				new LiftAction(), 300, Lift.getInstance()));
