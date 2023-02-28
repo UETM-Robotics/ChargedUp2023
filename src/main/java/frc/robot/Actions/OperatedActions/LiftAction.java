@@ -1,14 +1,18 @@
 package frc.robot.Actions.OperatedActions;
 import frc.robot.Actions.Framework.Action;
+import frc.robot.Utilities.Drivers.rcinput.ControllerU.Direction;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Lift.Position;
 
 public class LiftAction implements Action
 {
     private Lift lift;
+    private Direction pov;
 
-    public LiftAction()
+    public LiftAction(Direction pov)
     {
         lift = Lift.getInstance();
+        this.pov = pov;
     }
 
     @Override
@@ -30,6 +34,26 @@ public class LiftAction implements Action
     @Override
     public void start() {
         // TODO Auto-generated method stub
-        lift.doit();
+        switch(pov)
+        {
+            case UP:
+                lift.setPos(Position.HIGH);
+                break;
+
+            case RIGHT:
+                lift.setPos(Position.MID);
+                break;
+
+            case DOWN:
+                lift.setPos(Position.LOW);
+                break;
+
+            case LEFT:
+                lift.setPos(Position.PICKUP);
+                break;
+
+            default:
+                break;
+        }
     }
 }

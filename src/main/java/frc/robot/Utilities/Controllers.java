@@ -59,9 +59,9 @@ public class Controllers {
 
 
 
-        //intakeMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.intakeMotorPort, 0);
-        liftMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(9, 0);
-        //actuatorMotor = new SparkMaxU(PortConstants.actuatorPort, 0);
+        intakeMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.intakeMotorPort, 0);
+        liftMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.liftMotorPort, 0);
+        actuatorMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.actuatorMotorPort, 0);
 
         gyro = new AHRS(SPI.Port.kMXP);
 
@@ -149,8 +149,9 @@ public class Controllers {
 
     private final SparkMaxU rightHindThrottleMotor, rightHindAngleMotor;
 
-    //private final SparkMaxU intakeMotor;//, actuatorMotor;
+    private final SparkMaxU intakeMotor;//, actuatorMotor;
     private final SparkMaxU liftMotor;
+    private final SparkMaxU actuatorMotor;
 
 
     private final Mk4iSwerveModule leftFrontModuleU, rightFrontModuleU;
@@ -162,20 +163,20 @@ public class Controllers {
 
     private final ControllerU driverController;
 
-    /*public SparkMaxU getIntakeMotor()
+    public SparkMaxU getIntakeMotor()
     {
         return intakeMotor;
-    }*/
+    }
 
     public SparkMaxU getLiftMotor()
     {
         return liftMotor;
     }
 
-    /*public SparkMaxU getActuatorMotor()
+    public SparkMaxU getActuatorMotor()
     {
         return actuatorMotor;
-    }*/
+    }
 
     public SparkMaxU getLeftFrontThrottleMotor() {
         return leftFrontThrottleMotor;

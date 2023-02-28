@@ -19,8 +19,6 @@ public class SetIntakeAction implements Action
         this.state = state;
         mButtonGetterMethod = buttonGetterMethod;
 
-        SmartDashboard.putNumber("AHHH", 1);
-
         if(state == state.INTAKE)
         {
             intake.revert();
@@ -33,11 +31,8 @@ public class SetIntakeAction implements Action
     }
 
     @Override
-    public boolean isFinished() {
-        // TODO Auto-generated method stub
-        // TODO FIX THIS CUZ ITS RETURNING TRUE
-
-        SmartDashboard.putString("Intake", "Stop");
+    public boolean isFinished()
+    {
         return !mButtonGetterMethod.get();
     }
 
