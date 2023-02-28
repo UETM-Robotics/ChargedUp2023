@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Actions.Autonomy.AutomatedAction;
 import frc.robot.Actions.Framework.TeleopActionRunner;
 import frc.robot.Actions.OperatedActions.LiftAction;
+import frc.robot.Actions.OperatedActions.SetActuatedAction;
 import frc.robot.Actions.OperatedActions.SetIntakeAction;
 import frc.robot.Loops.CrashTrackingRunnable;
 import frc.robot.Utilities.Controllers;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.DriveTrain.DriveControlState;
 import frc.robot.subsystems.Intake.state;
+import frc.robot.subsystems.Lift.Position;
 
 public class HIDController {
     
@@ -176,26 +178,42 @@ public class HIDController {
     //DO NOT DECLARE DRIVER CONTROLS HERE
     private void registerControls()
 	{
-		/*registerButtonPressControl(driverController, 5, (j, b) -> {
+		//Intake
+		registerButtonPressControl(driverController, 5, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
 				new SetIntakeAction(state.INTAKE, () -> j.getRawButton(b)), 300, Intake.getInstance()));
-				SmartDashboard.putString("Intake", "In");
 		});
 
 		registerButtonPressControl(driverController, 6, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
 				new SetIntakeAction(state.EXTAKE, () -> j.getRawButton(b)), 300, Intake.getInstance()));
-				SmartDashboard.putString("Intake", "Ex");
-		});*/
-
-		registerButtonPressControl(driverController, 4, (j, b) -> {
-			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new CommunicationLEDAction(), 300, CommunicationLED.getInstance()));
 		});
 
+		//Lift
+		registerDpadControl(driverController, Direction.UP, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new LiftAction(Direction.UP), 300, Lift.getInstance()));
+		});
+
+		registerDpadControl(driverController, Direction.RIGHT, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new LiftAction(Direction.RIGHT), 300, Lift.getInstance()));
+		});
+
+		registerDpadControl(driverController, Direction.DOWN, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new LiftAction(Direction.DOWN), 300, Lift.getInstance()));
+		});
+
+		registerDpadControl(driverController, Direction.LEFT, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new LiftAction(Direction.LEFT), 300, Lift.getInstance()));
+		});
+
+		//Actuated
 		registerButtonPressControl(driverController, 1, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new LiftAction(), 300, Lift.getInstance()));
+				new SetActuatedAction(), 300));
 		});
 
 		mControlFunctions.add( () -> {

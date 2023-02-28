@@ -29,5 +29,7 @@ public class PortConstants {
     public static final int rightHindThrottleMotorPort  = 3, rightHindAngleMotorPort  = 3;*/
 
     //TODO: FIGURE OUT PORTS
-    public static final int intakeMotorPort = 9;//, actuatorPort = ;
+    public static final int intakeMotorPort = 9;
+    public static final int actuatorMotorPort = 10;
+    public static final int liftMotorPort = 11;
 }

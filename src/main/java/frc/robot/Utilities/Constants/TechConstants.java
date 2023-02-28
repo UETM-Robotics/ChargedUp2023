@@ -1,5 +1,9 @@
 package frc.robot.Utilities.Constants;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -51,6 +55,13 @@ public class TechConstants {
     public static final double kDriveRotationsToMeters = 0.03921201641;
     public static final double kDriveRPM_To_InchesPerSec = 0.2094395103;
     public static final double kDriveRPM_To_MetersPerSec = 6.53533607E-4;
+
+
+    //TODO: Figure these out
+    public static final double kPickup = 0;
+    public static final double kLow = 20;
+    public static final double kMid = 40;
+    public static final double kHigh = 60;
 
 
     public static final SwerveDriveKinematics swerve_kinematics = new SwerveDriveKinematics(

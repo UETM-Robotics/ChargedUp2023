@@ -7,6 +7,7 @@ import frc.robot.Loops.Loop;
 import frc.robot.Loops.Looper;
 import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.CustomSubsystem;
+import frc.robot.Utilities.Constants.TechConstants;
 import frc.robot.Utilities.Drivers.SparkHelper;
 import frc.robot.Utilities.Drivers.SparkMaxU;
 
@@ -16,7 +17,8 @@ public class Lift extends Subsystem implements CustomSubsystem
 
     SparkMaxU liftMotor;
 
-    private boolean yay;
+    private Position pos;
+    private double reference;
 
     public static Lift getInstance()
     {
@@ -28,10 +30,12 @@ public class Lift extends Subsystem implements CustomSubsystem
         liftMotor = Controllers.getInstance().getLiftMotor();
 
         //Try increasing kP?
-        SparkHelper.setPIDGains(liftMotor, 0, 0.0001, 0, 0, 0);
+        SparkHelper.setPIDGains(liftMotor, 0, 0.01, 0, 0, 0);
+        //SparkHelper.setSmartMotionParams(liftMotor, 0, 0, 0);
         liftMotor.getPIDController().setOutputRange(-1, 1);
         
-        yay = false;
+        pos = Position.PICKUP;
+        reference = 0;
     }
 
     private final Loop mLoop = new Loop()
@@ -50,16 +54,31 @@ public class Lift extends Subsystem implements CustomSubsystem
         @Override
         public void onLoop(double timestamp, boolean isAuto) 
         {
-            // TODO Auto-generated method stub
-            if(yay)
+            switch(pos)
             {
-                SmartDashboard.putString("Success On", liftMotor.getPIDController().setReference(40, ControlType.kPosition).name());                
+                case PICKUP:
+                    reference = TechConstants.kPickup;
+                    break;
+
+                case LOW:
+                    reference = TechConstants.kLow;
+                    break;
+
+                case MID:
+                    reference = TechConstants.kMid;
+                    break;
+
+                case HIGH:
+                    reference = TechConstants.kHigh;
+                    break;
+
+                default:
+                    reference = TechConstants.kPickup;
+                    SmartDashboard.putString("LIFT ERROR", "INVALID POS WTF HOW DID THIS EVEN HAPPEN");
+                    break;
             }
 
-            else
-            {
-                SmartDashboard.putString("Success Off", liftMotor.getPIDController().setReference(0, ControlType.kPosition).name());  
-            }
+            liftMotor.set(reference, ControlType.kPosition);
         }
 
         @Override
@@ -91,14 +110,22 @@ public class Lift extends Subsystem implements CustomSubsystem
         // TODO Auto-generated method stub
     }
 
-    public void doit()
+    public void setPos(Position pos)
     {
-        yay = !yay;
+        this.pos = pos;
     }
 
     /*public boolean pos()
     {
         //return liftMotor.get() >= 40;
     }*/
+
+    public enum Position
+    {
+        LOW,
+        MID,
+        HIGH,
+        PICKUP
+    }
     
 }

@@ -4,17 +4,20 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax.ControlType;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Loops.Loop;
 import frc.robot.Loops.Looper;
 import frc.robot.Utilities.Controllers;
+import frc.robot.Utilities.Drivers.SparkHelper;
 import frc.robot.Utilities.Drivers.SparkMaxU;
 import frc.robot.Utilities.CustomSubsystem;
 
 public class Intake extends Subsystem implements CustomSubsystem {
     /** Creates a new ExampleSubsystem. */
-    private final SparkMaxU motor;
-    //private final SparkMaxU acuator;
+    private final SparkMaxU intakeMotor;
+    private final SparkMaxU acuator;
     private state curState = state.DEACTIVE;
     private boolean actuated;
 
@@ -27,10 +30,11 @@ public class Intake extends Subsystem implements CustomSubsystem {
 
     private Intake()
     {
-        motor = Controllers.getInstance().getLiftMotor();
+        intakeMotor = Controllers.getInstance().getLiftMotor();
+        acuator = Controllers.getInstance().getActuatorMotor();
 
-        //TODO: PID TUNE ACTUATOR
-        //acuator = Controllers.getInstance().getActuatorMotor();
+        SparkHelper.setPIDGains(acuator, 0, 0.01, 0, 0, 0);
+
         actuated = false;
     }
 
@@ -55,28 +59,38 @@ public class Intake extends Subsystem implements CustomSubsystem {
                 switch(curState)
                 {
                     case DEACTIVE:
-                        motor.set(0);
+                        intakeMotor.set(0);
                         SmartDashboard.putString("State", "DEACTIVE");
                         break;
                 
                     case INTAKE:
-                        motor.set(0.4);
+                        intakeMotor.set(0.4);
                         SmartDashboard.putString("State", "INTAKE");
                         break;
                 
                     case EXTAKE:
-                        motor.set(-0.4);
+                        intakeMotor.set(-0.4);
                         SmartDashboard.putString("State", "EXTAKE");
                         break;
                 
                     default:
-                        motor.set(0);
+                        intakeMotor.set(0);
                         SmartDashboard.putString("ERROR", "INVALID INTAKE STATE THIS SHOULDN'T HAPPEN BUT IF YOU'RE SEEING THIS YOU REALLY SCREWED UP LMAO");
                         SmartDashboard.putString("State", "ERROR");
                         break;
                 }
 
-                SmartDashboard.putNumber("Motor Val", motor.get());
+                if(actuated)
+                {
+                    acuator.set(20, ControlType.kPosition);
+                }
+
+                else
+                {
+                    acuator.set(0, ControlType.kPosition);
+                }
+
+                SmartDashboard.putNumber("Motor Val", intakeMotor.get());
             }
         }
 
@@ -87,27 +101,9 @@ public class Intake extends Subsystem implements CustomSubsystem {
         }
     };
 
-    public void setActuated(boolean actuated)
+    public void actuate()
     {
-        if(this.actuated == actuated)
-        {
-            return;
-        }
-
-        this.actuated = actuated;
-
-        //TODO: FIGURE OUT POSITIONS
-        if(actuated)
-        {
-            //TODO: FIGURE OUT POS
-            //acuator.set(0, ControlType.kPosition);
-        }
-
-        else
-        {
-            //acuator.set(0, ControlType.kPosition);
-            setState(state.DEACTIVE);
-        }
+        actuated = !actuated;
     }
 
     public void setState(state newState)
@@ -132,20 +128,20 @@ public class Intake extends Subsystem implements CustomSubsystem {
     }
 
     public void prepareToEject() {
-        motor.setSmartCurrentLimit(80);
-        motor.setOpenLoopRampRate(0.2);
+        intakeMotor.setSmartCurrentLimit(80);
+        intakeMotor.setOpenLoopRampRate(0.2);
     }
 
     public void revert() {
-        motor.setSmartCurrentLimit(50);
-        motor.setOpenLoopRampRate(1);
+        intakeMotor.setSmartCurrentLimit(50);
+        intakeMotor.setOpenLoopRampRate(1);
     }
 
 
     @Override
     public void init() {
-        motor.setSmartCurrentLimit(50);
-        motor.setOpenLoopRampRate(1);
+        intakeMotor.setSmartCurrentLimit(50);
+        intakeMotor.setOpenLoopRampRate(1);
     }
 
     public enum state
