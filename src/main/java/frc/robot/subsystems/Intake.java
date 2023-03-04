@@ -17,7 +17,7 @@ import frc.robot.Utilities.CustomSubsystem;
 public class Intake extends Subsystem implements CustomSubsystem {
     /** Creates a new ExampleSubsystem. */
     private final SparkMaxU intakeMotor;
-    private final SparkMaxU acuator;
+    private final SparkMaxU actuator;
     private state curState = state.DEACTIVE;
     private boolean actuated;
 
@@ -31,9 +31,9 @@ public class Intake extends Subsystem implements CustomSubsystem {
     private Intake()
     {
         intakeMotor = Controllers.getInstance().getLiftMotor();
-        acuator = Controllers.getInstance().getActuatorMotor();
+        actuator = Controllers.getInstance().getActuatorMotor();
 
-        SparkHelper.setPIDGains(acuator, 0, 0.01, 0, 0, 0);
+        SparkHelper.setPIDGains(actuator, 0, 0.01, 0, 0, 0);
 
         actuated = false;
     }
@@ -82,12 +82,12 @@ public class Intake extends Subsystem implements CustomSubsystem {
 
                 if(actuated)
                 {
-                    acuator.set(20, ControlType.kPosition);
+                    actuator.set(20, ControlType.kPosition);
                 }
 
                 else
                 {
-                    acuator.set(0, ControlType.kPosition);
+                    actuator.set(0, ControlType.kPosition);
                 }
 
                 SmartDashboard.putNumber("Motor Val", intakeMotor.get());
@@ -108,23 +108,7 @@ public class Intake extends Subsystem implements CustomSubsystem {
 
     public void setState(state newState)
     {
-        if(curState != newState)
-        {
-            try
-            {
-                curState = newState;
-            }
-            
-            catch (Exception e)
-            {
-                
-            }
-        }
-    }
-
-    public void test()
-    {
-        
+        curState = newState;
     }
 
     public void prepareToEject() {

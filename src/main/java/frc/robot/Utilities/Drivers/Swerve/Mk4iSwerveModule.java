@@ -1,5 +1,6 @@
 package frc.robot.Utilities.Drivers.Swerve;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -20,26 +21,26 @@ public class Mk4iSwerveModule {
     //private final PIDController turningPidController;
     private final SynchronousPIDF turningPidController;
 
-    private final AnalogInput absoluteEncoder;
+    private final CANCoder caNcoder;
+    
     private final double absoluteEncoderOffsetRad;
 
     private IdleMode mIdleMode = IdleMode.COAST;
 
 
-    public Mk4iSwerveModule(SparkMaxU driveMotor, SparkMaxU turningMotor, AnalogInput angleEncoder, double absoluteEncoderOffset) {
+    public Mk4iSwerveModule(SparkMaxU driveMotor, SparkMaxU turningMotor, CANCoder caNcoder, double absoluteEncoderOffset) {
 
         driveMotor.restoreFactoryDefaults();
         turningMotor.restoreFactoryDefaults();
 
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
 
+        this.caNcoder = caNcoder;
 
         this.driveMotor = driveMotor;
         this.turningMotor = turningMotor;
 
         this.driveMotor.setInverted(true);
-
-        this.absoluteEncoder = angleEncoder;
 
 
         this.driveMotor.setSmartCurrentLimit(30);
@@ -149,6 +150,7 @@ public class Mk4iSwerveModule {
     public void resetEncoders() {
         driveMotor.resetEncoder();
         //turningEncoder.setPosition(getAbsoluteEncoderRad());
+        turningMotor.setEncoderPosition(caNcoder.getAbsolutePosition());
     }
 
     public SwerveModuleState getState() {

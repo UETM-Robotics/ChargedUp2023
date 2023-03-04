@@ -1,6 +1,9 @@
 package frc.robot.Utilities;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Utilities.Constants.PortConstants;
@@ -63,6 +66,14 @@ public class Controllers {
         liftMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.liftMotorPort, 0);
         actuatorMotor = CANSpeedControllerBuilder.createFastMasterSparkMax(PortConstants.actuatorMotorPort, 0);
 
+        liftMotor.setIdleMode(IdleMode.kBrake);
+        actuatorMotor.setIdleMode(IdleMode.kBrake);
+
+        CANCoder caNfr = new CANCoder(0);
+        CANCoder caNfl = new CANCoder(0);
+        CANCoder caNbr = new CANCoder(0);
+        CANCoder caNbl = new CANCoder(0);
+
         gyro = new AHRS(SPI.Port.kMXP);
 
 
@@ -106,28 +117,28 @@ public class Controllers {
         leftFrontModuleU = new Mk4iSwerveModule(
             leftFrontThrottleMotor, 
             leftFrontAngleMotor, 
-            new AnalogInput(0), 
+            caNfl, 
             0
         );
 
         rightFrontModuleU = new Mk4iSwerveModule(
             rightFrontThrottleMotor, 
             rightFrontAngleMotor, 
-            new AnalogInput(1), 
+            caNfr, 
             0
         );
 
         leftHindModuleU = new Mk4iSwerveModule(
             leftHindThrottleMotor, 
             leftHindAngleMotor, 
-            new AnalogInput(2), 
+           caNbl, 
             0
         );
 
         rightHindModuleU = new Mk4iSwerveModule(
             rightHindThrottleMotor, 
-            rightHindAngleMotor, 
-            new AnalogInput(3), 
+            rightHindAngleMotor,
+            caNbr,
             0
         );
 

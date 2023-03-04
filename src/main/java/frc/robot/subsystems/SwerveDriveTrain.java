@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.REVLibError;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
@@ -25,8 +26,10 @@ import frc.robot.Utilities.Swerve.ChassisSpeeds;
 import frc.robot.Utilities.Swerve.SwerveDriveKinematics;
 import frc.robot.Utilities.Swerve.SwerveModuleState;
 
-public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
 
+
+public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
+    
 
     private static final SwerveDriveTrain instance = new SwerveDriveTrain();
     private final RobotState robotState = RobotState.getInstance();
