@@ -30,10 +30,10 @@ public class Intake extends Subsystem implements CustomSubsystem {
 
     private Intake()
     {
-        intakeMotor = Controllers.getInstance().getLiftMotor();
+        intakeMotor = Controllers.getInstance().getIntakeMotor();
         actuator = Controllers.getInstance().getActuatorMotor();
 
-        SparkHelper.setPIDGains(actuator, 0, 0.01, 0, 0, 0);
+        //SparkHelper.setPIDGains(actuator, 0, 0.01, 0, 0, 0);
 
         actuated = false;
     }
@@ -64,12 +64,12 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 
                     case INTAKE:
-                        intakeMotor.set(0.4);
+                        intakeMotor.set(0.2);
                         SmartDashboard.putString("State", "INTAKE");
                         break;
                 
                     case EXTAKE:
-                        intakeMotor.set(-0.4);
+                        intakeMotor.set(-0.2);
                         SmartDashboard.putString("State", "EXTAKE");
                         break;
                 
@@ -80,7 +80,7 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 }
 
-                if(actuated)
+                /*if(actuated)
                 {
                     actuator.set(20, ControlType.kPosition);
                 }
@@ -88,7 +88,7 @@ public class Intake extends Subsystem implements CustomSubsystem {
                 else
                 {
                     actuator.set(0, ControlType.kPosition);
-                }
+                }*/
 
                 SmartDashboard.putNumber("Motor Val", intakeMotor.get());
             }
@@ -111,21 +111,8 @@ public class Intake extends Subsystem implements CustomSubsystem {
         curState = newState;
     }
 
-    public void prepareToEject() {
-        intakeMotor.setSmartCurrentLimit(80);
-        intakeMotor.setOpenLoopRampRate(0.2);
-    }
-
-    public void revert() {
-        intakeMotor.setSmartCurrentLimit(50);
-        intakeMotor.setOpenLoopRampRate(1);
-    }
-
-
     @Override
     public void init() {
-        intakeMotor.setSmartCurrentLimit(50);
-        intakeMotor.setOpenLoopRampRate(1);
     }
 
     public enum state

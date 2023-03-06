@@ -59,9 +59,9 @@ public class TechConstants {
 
     //TODO: Figure these out
     public static final double kPickup = 0;
-    public static final double kLow = 20;
-    public static final double kMid = 40;
-    public static final double kHigh = 60;
+    public static final double kLow = -25;
+    public static final double kMid = -75;
+    public static final double kHigh = -105;
 
 
     public static final SwerveDriveKinematics swerve_kinematics = new SwerveDriveKinematics(

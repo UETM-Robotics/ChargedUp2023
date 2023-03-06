@@ -31,7 +31,7 @@ public class Lift extends Subsystem implements CustomSubsystem
         liftMotor = Controllers.getInstance().getLiftMotor();
 
         //Try increasing kP?
-        SparkHelper.setPIDGains(liftMotor, 0, 0.01, 0, 0, 0);
+        SparkHelper.setPIDGains(liftMotor, 0, 0.00014, 0, 0, 0.006);
         //SparkHelper.setSmartMotionParams(liftMotor, 0, 0, 0);
         liftMotor.getPIDController().setOutputRange(-1, 1);
         
@@ -79,12 +79,13 @@ public class Lift extends Subsystem implements CustomSubsystem
                     break;
             }
 
-            liftMotor.set(reference, ControlType.kPosition);
+            liftMotor.set(reference, ControlType.kSmartMotion);
         }
 
         @Override
         public void onStop(double timestamp) {
             // TODO Auto-generated method stub
+            liftMotor.set(0);
         }
         
     };

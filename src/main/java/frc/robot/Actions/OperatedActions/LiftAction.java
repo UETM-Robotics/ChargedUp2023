@@ -29,6 +29,7 @@ public class LiftAction implements Action
     @Override
     public void done() {
         // TODO Auto-generated method stub
+        lift.stop();
     }
 
     @Override

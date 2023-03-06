@@ -69,10 +69,10 @@ public class Controllers {
         liftMotor.setIdleMode(IdleMode.kBrake);
         actuatorMotor.setIdleMode(IdleMode.kBrake);
 
-        CANCoder caNfr = new CANCoder(0);
-        CANCoder caNfl = new CANCoder(0);
-        CANCoder caNbr = new CANCoder(0);
-        CANCoder caNbl = new CANCoder(0);
+        caNfr = new CANCoder(PortConstants.canFr);
+        caNfl = new CANCoder(PortConstants.canFl);
+        caNbr = new CANCoder(PortConstants.canBr);
+        caNbl = new CANCoder(PortConstants.canBl);
 
         gyro = new AHRS(SPI.Port.kMXP);
 
@@ -118,28 +118,28 @@ public class Controllers {
             leftFrontThrottleMotor, 
             leftFrontAngleMotor, 
             caNfl, 
-            0
+            190.01953125
         );
 
         rightFrontModuleU = new Mk4iSwerveModule(
             rightFrontThrottleMotor, 
             rightFrontAngleMotor, 
             caNfr, 
-            0
+            203.73046875
         );
 
         leftHindModuleU = new Mk4iSwerveModule(
             leftHindThrottleMotor, 
             leftHindAngleMotor, 
-           caNbl, 
-            0
+            caNbl,
+            60.46875
         );
 
         rightHindModuleU = new Mk4iSwerveModule(
             rightHindThrottleMotor, 
             rightHindAngleMotor,
             caNbr,
-            0
+            228.69140625
         );
 
         driverController = new ControllerU(0);
@@ -163,6 +163,11 @@ public class Controllers {
     private final SparkMaxU intakeMotor;//, actuatorMotor;
     private final SparkMaxU liftMotor;
     private final SparkMaxU actuatorMotor;
+
+    private final CANCoder caNfr;
+    private final CANCoder caNfl;
+    private final CANCoder caNbr;
+    private final CANCoder caNbl;
 
 
     private final Mk4iSwerveModule leftFrontModuleU, rightFrontModuleU;
@@ -251,4 +256,23 @@ public class Controllers {
         return driverController;
     }
 
+    public CANCoder getCanCoderFR()
+    {
+        return caNfr;
+    }
+
+    public CANCoder getCanCoderFL()
+    {
+        return caNfl;
+    }
+
+    public CANCoder getCanCoderBR()
+    {
+        return caNbr;
+    }
+
+    public CANCoder getCanCoderBL()
+    {
+        return caNbl;
+    }
 }

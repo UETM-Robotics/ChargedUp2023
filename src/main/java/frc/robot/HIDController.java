@@ -181,39 +181,38 @@ public class HIDController {
 		//Intake
 		registerButtonPressControl(driverController, 5, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new SetIntakeAction(state.INTAKE, () -> j.getRawButton(b)), 300, Intake.getInstance()));
+				new SetIntakeAction(state.INTAKE, () -> j.getRawButton(b)), 300));
 		});
 
 		registerButtonPressControl(driverController, 6, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new SetIntakeAction(state.EXTAKE, () -> j.getRawButton(b)), 300, Intake.getInstance()));
+				new SetIntakeAction(state.EXTAKE, () -> j.getRawButton(b)), 300));
 		});
+
+		/*registerButtonPressControl(driverController, 1, (j, b) -> {
+			TeleopActionRunner.runAction(AutomatedAction.fromAction(
+				new SetActuatedAction(), 300));
+		});*/
 
 		//Lift
 		registerDpadControl(driverController, Direction.UP, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new LiftAction(Direction.UP), 300, Lift.getInstance()));
+				new LiftAction(Direction.UP), 300));
 		});
 
 		registerDpadControl(driverController, Direction.RIGHT, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new LiftAction(Direction.RIGHT), 300, Lift.getInstance()));
+				new LiftAction(Direction.RIGHT), 300));
 		});
 
 		registerDpadControl(driverController, Direction.DOWN, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new LiftAction(Direction.DOWN), 300, Lift.getInstance()));
+				new LiftAction(Direction.DOWN), 300));
 		});
 
 		registerDpadControl(driverController, Direction.LEFT, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new LiftAction(Direction.LEFT), 300, Lift.getInstance()));
-		});
-
-		//Actuated
-		registerButtonPressControl(driverController, 1, (j, b) -> {
-			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new SetActuatedAction(), 300));
+				new LiftAction(Direction.LEFT), 300));
 		});
 
 		mControlFunctions.add( () -> {
@@ -221,7 +220,10 @@ public class HIDController {
 			SmartDashboard.putNumber("Robot Position X", RobotState.getInstance().getFieldToVehicleInches().getPose().x() );
 			SmartDashboard.putNumber("Robot Position Y", RobotState.getInstance().getFieldToVehicleInches().getPose().y() );
 			SmartDashboard.putNumber("Robot Position Theta", RobotState.getInstance().getFieldToVehicleInches().getRotation().getDegrees());
-
+			SmartDashboard.putNumber("FR", controllers.getCanCoderFR().getAbsolutePosition());
+			SmartDashboard.putNumber("FL", controllers.getCanCoderFL().getAbsolutePosition());
+			SmartDashboard.putNumber("BR", controllers.getCanCoderBR().getAbsolutePosition());
+			SmartDashboard.putNumber("BL", controllers.getCanCoderBL().getAbsolutePosition());
 			return true;
 		} );		
     }

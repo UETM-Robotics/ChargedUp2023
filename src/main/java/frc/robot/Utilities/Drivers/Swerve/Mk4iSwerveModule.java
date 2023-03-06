@@ -1,10 +1,8 @@
 package frc.robot.Utilities.Drivers.Swerve;
 
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 
 import frc.robot.Utilities.SynchronousPIDF;
 import frc.robot.Utilities.Constants.TechConstants;
@@ -24,16 +22,18 @@ public class Mk4iSwerveModule {
     private final CANCoder caNcoder;
     
     private final double absoluteEncoderOffsetRad;
+    private final double offset;
 
     private IdleMode mIdleMode = IdleMode.COAST;
 
 
-    public Mk4iSwerveModule(SparkMaxU driveMotor, SparkMaxU turningMotor, CANCoder caNcoder, double absoluteEncoderOffset) {
+    public Mk4iSwerveModule(SparkMaxU driveMotor, SparkMaxU turningMotor, CANCoder caNcoder, double offset) {
 
         driveMotor.restoreFactoryDefaults();
         turningMotor.restoreFactoryDefaults();
 
-        this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
+        this.absoluteEncoderOffsetRad = 0;
+        this.offset = offset;
 
         this.caNcoder = caNcoder;
 
@@ -62,7 +62,7 @@ public class Mk4iSwerveModule {
         turningPidController = new SynchronousPIDF(0.25, 0, 0.0);
 
         //turningPidController.enableContinuousInput(-Math.PI, Math.PI);
-        turningPidController.setContinuous(false);
+        turningPidController.setContinuous(true);
         turningPidController.setInputRange(-Math.PI, Math.PI);
 
         resetEncoders();
@@ -130,6 +130,7 @@ public class Mk4iSwerveModule {
     public synchronized double getAbsoluteEncoderRad() {
         //double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
         double angle = (turningMotor.getEncoder().getPosition() % 21.60509554140127) / 21.60509554140127;
+        //double angle = caNcoder.getAbsolutePosition();
         angle *= 2.0 * Math.PI;
         angle -= absoluteEncoderOffsetRad;
 
@@ -149,8 +150,7 @@ public class Mk4iSwerveModule {
 
     public void resetEncoders() {
         driveMotor.resetEncoder();
-        //turningEncoder.setPosition(getAbsoluteEncoderRad());
-        turningMotor.setEncoderPosition(caNcoder.getAbsolutePosition());
+        turningMotor.getEncoder().setPosition(caNcoder.getAbsolutePosition() * 2 * Math.PI / 360 + offset * 2 * Math.PI / 360);
     }
 
     public SwerveModuleState getState() {

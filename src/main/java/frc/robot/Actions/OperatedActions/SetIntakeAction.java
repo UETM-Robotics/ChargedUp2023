@@ -18,16 +18,6 @@ public class SetIntakeAction implements Action
         intake = Intake.getInstance();
         this.state = state;
         mButtonGetterMethod = buttonGetterMethod;
-
-        if(state == state.INTAKE)
-        {
-            intake.revert();
-        }
-
-        else
-        {
-            intake.prepareToEject();
-        }
     }
 
     @Override
