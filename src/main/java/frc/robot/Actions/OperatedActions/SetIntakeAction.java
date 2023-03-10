@@ -3,21 +3,23 @@ package frc.robot.Actions.OperatedActions;
 import java.util.function.Supplier;
 
 import frc.robot.Actions.Framework.Action;
+import frc.robot.Utilities.Controllers;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Intake.state;
 
 public class SetIntakeAction implements Action
 {
-    Intake intake;
-    Intake.state state;
+    private Intake intake;
+    private Intake.state state;
 
-    Supplier<Boolean> mButtonGetterMethod;
+    private Supplier<Boolean> mButtonGetterMethod;
 
     public SetIntakeAction(Intake.state state, Supplier<Boolean> buttonGetterMethod)
     {
         intake = Intake.getInstance();
         this.state = state;
-        mButtonGetterMethod = buttonGetterMethod;
+        mButtonGetterMethod = buttonGetterMethod; 
     }
 
     @Override
@@ -36,12 +38,14 @@ public class SetIntakeAction implements Action
     public void done() {
         // TODO Auto-generated method stub
         intake.setState(state.DEACTIVE);
+        Controllers.getInstance().getDriverController().setRumble(0);
     }
 
     @Override
     public void start() {
         // TODO Auto-generated method stub
         intake.setState(state);
+        Controllers.getInstance().getDriverController().setRumble(0.4);
     }
     
 }

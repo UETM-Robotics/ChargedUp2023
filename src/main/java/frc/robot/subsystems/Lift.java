@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,7 +18,6 @@ public class Lift extends Subsystem implements CustomSubsystem
     SparkMaxU liftMotor;
 
     private Position pos;
-    private double reference;
 
     public static Lift getInstance()
     {
@@ -30,13 +28,13 @@ public class Lift extends Subsystem implements CustomSubsystem
     {
         liftMotor = Controllers.getInstance().getLiftMotor();
 
-        //Try increasing kP?
-        SparkHelper.setPIDGains(liftMotor, 0, 0.00014, 0, 0, 0.006);
+        SparkHelper.setPIDGains(liftMotor, 0, 0.00002, 0, 0, 0.003);
         //SparkHelper.setSmartMotionParams(liftMotor, 0, 0, 0);
-        liftMotor.getPIDController().setOutputRange(-1, 1);
+        liftMotor.getPIDController().setOutputRange(-7, 4);
         
         pos = Position.PICKUP;
-        reference = 0;
+
+        prepare();
     }
 
     private final Loop mLoop = new Loop()
@@ -58,34 +56,45 @@ public class Lift extends Subsystem implements CustomSubsystem
             switch(pos)
             {
                 case PICKUP:
-                    reference = TechConstants.kPickup;
+                    liftMotor.set(TechConstants.kPickup, ControlType.kSmartMotion);
                     break;
 
                 case LOW:
-                    reference = TechConstants.kLow;
+                    liftMotor.set(TechConstants.kLow, ControlType.kSmartMotion);
                     break;
 
                 case MID:
-                    reference = TechConstants.kMid;
+                    liftMotor.set(TechConstants.kMid, ControlType.kSmartMotion);
                     break;
 
                 case HIGH:
-                    reference = TechConstants.kHigh;
+                    liftMotor.set(TechConstants.kHigh, ControlType.kSmartMotion);
+                    break;
+                
+                case OPEN_LOOP_UP:
+                    liftMotor.set(-0.4);
+                    break;
+
+                case OPEN_LOOP_DOWN:
+                    liftMotor.set(0.4);
+                    break;
+    
+                case IDLE:
+                    liftMotor.set(0);
                     break;
 
                 default:
-                    reference = TechConstants.kPickup;
+                    liftMotor.set(0);
                     SmartDashboard.putString("LIFT ERROR", "INVALID POS WTF HOW DID THIS EVEN HAPPEN");
                     break;
             }
 
-            liftMotor.set(reference, ControlType.kSmartMotion);
+            
         }
 
         @Override
         public void onStop(double timestamp) {
             // TODO Auto-generated method stub
-            liftMotor.set(0);
         }
         
     };
@@ -117,17 +126,21 @@ public class Lift extends Subsystem implements CustomSubsystem
         this.pos = pos;
     }
 
-    /*public boolean pos()
+    public void prepare()
     {
-        //return liftMotor.get() >= 40;
-    }*/
+        liftMotor.setSmartCurrentLimit(70);
+        liftMotor.setOpenLoopRampRate(0.2);
+    }
 
     public enum Position
     {
         LOW,
         MID,
         HIGH,
-        PICKUP
+        PICKUP,
+        OPEN_LOOP_UP,
+        OPEN_LOOP_DOWN,
+        IDLE
     }
     
 }

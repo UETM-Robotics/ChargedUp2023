@@ -7,13 +7,15 @@ import java.util.Map;
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+//import edu.wpi.first.math.geometry.Translation2d;
+//import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Utilities.SynchronousPIDF;
 import frc.robot.Utilities.Geometry.Translation2d;
 import frc.robot.Utilities.Swerve.SwerveDriveKinematics;
 
 public class TechConstants {
-
+    
     public static final double kLooperDt = 0.005;
     public static final int kLooperThreadPriority = 10;
     public static final int kControllerThreadPriority = 9;
@@ -32,8 +34,8 @@ public class TechConstants {
     public static final double kRPMtoMetersPerSecondConversionFactor = (0.1524 * Math.PI) / 60.0 / 10.71;
 
 
-    public static final double kDriveTrackWidth = 0.573; //left middle of wheel to right middle of wheel
-    public static final double kDriveWheelBase = 0.683; //front middle of wheel axle to back middle of wheel axle
+    public static final double kDriveTrackWidth = 0.57; //left middle of wheel to right middle of wheel
+    public static final double kDriveWheelBase = 0.667; //front middle of wheel axle to back middle of wheel axle
 
     public static final double kFrontLeftAngleOffset = 0.0;
     public static final double kHindLeftAngleOffset = 0.0;
@@ -71,7 +73,6 @@ public class TechConstants {
         new Translation2d(-TechConstants.kDriveWheelBase / 2.0, -TechConstants.kDriveTrackWidth / 2.0),        // Back left
         new Translation2d(-TechConstants.kDriveWheelBase / 2.0, TechConstants.kDriveTrackWidth / 2.0)        // Back right
     );
-
 
     //TODO: TUNE WHEN ON CARPET
     public static final double kPXController = 0;

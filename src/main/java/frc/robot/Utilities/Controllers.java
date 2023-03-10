@@ -11,8 +11,10 @@ import frc.robot.Utilities.Constants.TechConstants;
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.SparkMaxU;
 import frc.robot.Utilities.Drivers.Swerve.Mk4iSwerveModule;
+//import frc.robot.Utilities.Drivers.Swerve.SwerveModuleA;
 import frc.robot.Utilities.Drivers.rcinput.ControllerU;
 import frc.robot.Utilities.Geometry.Vector2d;
+import frc.robot.subsystems.SwerveModule;
 
 public class Controllers {
 
@@ -118,29 +120,107 @@ public class Controllers {
             leftFrontThrottleMotor, 
             leftFrontAngleMotor, 
             caNfl, 
-            190.01953125
+            190.01953125,
+            true
         );
 
         rightFrontModuleU = new Mk4iSwerveModule(
             rightFrontThrottleMotor, 
             rightFrontAngleMotor, 
             caNfr, 
-            203.73046875
+            203.73046875,
+            true
         );
 
         leftHindModuleU = new Mk4iSwerveModule(
             leftHindThrottleMotor, 
             leftHindAngleMotor, 
             caNbl,
-            60.46875
+            60.46875,
+            false
         );
 
         rightHindModuleU = new Mk4iSwerveModule(
             rightHindThrottleMotor, 
             rightHindAngleMotor,
             caNbr,
-            228.69140625
+            228.69140625,
+            false
         );
+
+        /*rightFrontModuleU = new SwerveModule(
+            rightFrontThrottleMotor,
+            rightFrontAngleMotor, 
+            caNfr,
+            false,
+            0,
+            false,
+            false
+        );
+
+        leftFrontModuleU = new SwerveModule(
+            leftFrontThrottleMotor,
+            actuatorMotor,
+            caNfl,
+            false,
+            0,
+            false,
+            false
+        );
+
+        rightHindModuleU = new SwerveModule(
+            rightHindThrottleMotor,
+            rightHindAngleMotor, 
+            caNbr,
+            false,
+            0,
+            false,
+            false
+        );
+
+        leftHindModuleU = new SwerveModule(
+            leftHindThrottleMotor,
+            leftHindAngleMotor,
+            caNbl,
+            false,
+            0,
+            false,
+            false
+        );*/
+
+        /*leftFrontModule = new SwerveModule(
+            leftFrontDriveMotor,
+            leftFrontAngleMotor,
+            caNfl,
+            false,
+            0,
+            false,
+            false
+        );
+
+        rightFrontModule = new SwerveModule(
+            rightFrontDriveMotor,
+            rightFrontAngleMotor,
+            caNfr,
+            false,
+            0,
+            false,
+            false
+        );
+
+        leftBackModule = new SwerveModule(
+            leftHindDriveMotor,
+            leftHindAngleMotor,
+            caNbl,
+            false,
+            0,
+            false,
+            false
+        );
+
+        rightBackModule = new SwerveModule(
+            right
+        );*/
 
         driverController = new ControllerU(0);
     }
@@ -171,7 +251,9 @@ public class Controllers {
 
 
     private final Mk4iSwerveModule leftFrontModuleU, rightFrontModuleU;
-    private final Mk4iSwerveModule leftHindModuleU , rightHindModuleU ;
+    private final Mk4iSwerveModule leftHindModuleU , rightHindModuleU;
+
+    //private final SwerveModule leftFrontModule, rightFrontModule, leftBackModule, rightBackModule;
 
 
     private final AHRS gyro;
@@ -245,7 +327,25 @@ public class Controllers {
     }
 
     
-    
+    /*public SwerveModule getRightFrontModule()
+    {
+        return rightFrontModule;
+    }
+
+    public SwerveModule getLeftFrontModule()
+    {
+        return leftFrontModule;
+    }
+
+    public SwerveModule getRightBackModule()
+    {
+        return rightBackModule;
+    }
+
+    public SwerveModule getLeftBackModule()
+    {
+        return leftBackModule;
+    }*/
 
 
     public AHRS getGyro() {

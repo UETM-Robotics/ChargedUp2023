@@ -21,6 +21,8 @@ public class Intake extends Subsystem implements CustomSubsystem {
     private state curState = state.DEACTIVE;
     private boolean actuated;
 
+    private boolean isCube = true;
+
     private static final Intake instance = new Intake();
 
     public static Intake getInstance()
@@ -33,7 +35,7 @@ public class Intake extends Subsystem implements CustomSubsystem {
         intakeMotor = Controllers.getInstance().getIntakeMotor();
         actuator = Controllers.getInstance().getActuatorMotor();
 
-        //SparkHelper.setPIDGains(actuator, 0, 0.01, 0, 0, 0);
+        SparkHelper.setPIDGains(actuator, 0, 0.001, 0, 0, 0.05);
 
         actuated = false;
     }
@@ -64,12 +66,12 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 
                     case INTAKE:
-                        intakeMotor.set(0.2);
+                        intakeMotor.set(isCube ? 0.65 : -0.65);
                         SmartDashboard.putString("State", "INTAKE");
                         break;
                 
                     case EXTAKE:
-                        intakeMotor.set(-0.2);
+                        intakeMotor.set(isCube ? -0.65 : 0.65);
                         SmartDashboard.putString("State", "EXTAKE");
                         break;
                 
@@ -80,15 +82,23 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 }
 
-                /*if(actuated)
+                if(actuated)
                 {
-                    actuator.set(20, ControlType.kPosition);
+                    if(curState == state.EXTAKE)
+                    {
+                        actuator.set(0.3, ControlType.kSmartMotion);
+                    }
+
+                    else
+                    {
+                        actuator.set(9, ControlType.kSmartMotion);
+                    }
                 }
 
                 else
                 {
-                    actuator.set(0, ControlType.kPosition);
-                }*/
+                    actuator.set(0, ControlType.kSmartMotion);
+                }
 
                 SmartDashboard.putNumber("Motor Val", intakeMotor.get());
             }
@@ -109,6 +119,11 @@ public class Intake extends Subsystem implements CustomSubsystem {
     public void setState(state newState)
     {
         curState = newState;
+    }
+
+    public void swapGamePiece()
+    {
+        isCube = !isCube;
     }
 
     @Override

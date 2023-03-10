@@ -3,14 +3,9 @@ package frc.robot.Actions.OperatedActions;
 import frc.robot.Actions.Framework.Action;
 import frc.robot.subsystems.Intake;
 
-public class SetActuatedAction implements Action
+public class SwapGamePiece implements Action
 {
-    private Intake intake;
-
-    public SetActuatedAction()
-    {
-        intake = Intake.getInstance();
-    }
+    private static final Intake intake = Intake.getInstance();
 
     @Override
     public boolean isFinished() {
@@ -27,7 +22,6 @@ public class SetActuatedAction implements Action
 
     @Override
     public void start() {
-        intake.actuate();
+        intake.swapGamePiece();
     }
-    
 }

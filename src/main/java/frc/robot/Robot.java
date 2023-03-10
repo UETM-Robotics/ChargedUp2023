@@ -4,16 +4,22 @@
 
 package frc.robot;
 
-import java.util.Optional;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CameraServerCvJNI;
 
+//import java.util.Optional;
+
+//import edu.wpi.first.cameraserver.CameraServer;
+//import edu.wpi.first.cscore.MjpegServer;
+//import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Autonomous.Framework.AutoModeBase;
+//import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecutor;
-import frc.robot.Autonomous.Modes.Test.Test;
+//import frc.robot.Autonomous.Modes.Test.Test;
 import frc.robot.Loops.Looper;
 import frc.robot.Loops.RobotStateEstimator;
 import frc.robot.subsystems.Intake;
@@ -21,9 +27,11 @@ import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.SwerveDriveTrain.DriveControlState;
 import frc.robot.Utilities.Controllers;
+import frc.robot.Utilities.Constants.TechConstants;
+//import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.Geometry.Pose2d;
 import frc.robot.Utilities.Geometry.Rotation2d;
-import frc.robot.Utilities.Swerve.SwerveModuleState;
+//import frc.robot.Utilities.Swerve.SwerveModuleState;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -39,7 +47,7 @@ public class Robot extends TimedRobot {
    */
 
   private Looper mLooper;
-  private AutoModeSelector mAutoModeSelector = new AutoModeSelector();
+  //private AutoModeSelector mAutoModeSelector = new AutoModeSelector();
   
   //private DriveTrain dTrain;
   private SwerveDriveTrain dTrain;
@@ -49,11 +57,14 @@ public class Robot extends TimedRobot {
 
   private AutoModeExecutor autoModeExecutor;
   private HIDController mHidController;
+  
+  //private MjpegServer server = new MjpegServer("Server", 0);
 
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    CameraServer.startAutomaticCapture();
 
     mLooper = new Looper();
 
@@ -149,7 +160,23 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic()
+  {
+    /*double numRots = 12 / (TechConstants.kDriveRotationsToInches / 12);
+
+    Controllers.getInstance().getLeftFrontThrottleMotor().set(0.5);
+    Controllers.getInstance().getRightFrontThrottleMotor().set(0.5);
+    Controllers.getInstance().getLeftHindThrottleMotor().set(0.5);
+    Controllers.getInstance().getRightHindThrottleMotor().set(0.5);
+
+    if(Controllers.getInstance().getLeftFrontThrottleMotor().getEncoder().getPosition() >= numRots)
+    {
+      Controllers.getInstance().getLeftFrontThrottleMotor().set(0);
+      Controllers.getInstance().getRightFrontThrottleMotor().set(0);
+      Controllers.getInstance().getLeftHindThrottleMotor().set(0);
+      Controllers.getInstance().getRightHindThrottleMotor().set(0);
+    }*/
+  }
 
   @Override
   public void teleopInit() {

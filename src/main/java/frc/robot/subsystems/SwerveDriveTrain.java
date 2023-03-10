@@ -142,6 +142,12 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
                     
                     case DRIVER_CONTROL:
 
+                        for(Mk4iSwerveModule module : modules)
+                        {
+                            module.setHighest(module.getRot());
+                            module.setLowest(module.getRot());
+                        }
+
                         setBrakeMode(driverController.getRawButton(7) ? DriveTrainBrakeMode.BRAKE : DriveTrainBrakeMode.COAST );
                         //setBrakeMode(DriveTrainBrakeMode.BRAKE);
 
@@ -150,6 +156,8 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
                                                                            -driverController.getNormalizedAxis(4, TechConstants.kJoystickDeadband), true);
                                                                             
                         //mPeriodicIO.driveDemand = new HolonomicDriveSignal(new Vector2d(0, 0.5), 0.0, false);
+
+                        //mPeriodicIO.driveDemand = new HolonomicDriveSignal(new Vector2d(0, 0.2), 0, false);
 
                         updateModules(mPeriodicIO.driveDemand);
                         
@@ -375,6 +383,8 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
             for(int i = 0; i < states.length; i++) {
                 modules[i].setDesiredState(states[i], true);
             }
+
+            //leftFront.setDesiredState(states[0]);
         }
 
         

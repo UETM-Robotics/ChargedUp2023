@@ -243,6 +243,10 @@ public class ControllerU {
 		return Math.abs(getRawAxis(axis)) > threshold;
 	}
 
+	public boolean getTriggerPressedRaw(int axis, double threshold) {
+		return getRawAxis(axis) > threshold;
+	}
+
 	private boolean currTrigRising;
 	private boolean retValTrigRising;
 	public boolean getRisingEdgeTrigger(int axis, double threshold) {
