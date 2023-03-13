@@ -152,8 +152,8 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
                         //setBrakeMode(DriveTrainBrakeMode.BRAKE);
 
                         
-                        mPeriodicIO.driveDemand = new HolonomicDriveSignal(driverController.getLeftJoystickVector().scale(0.3), 
-                                                                           -driverController.getNormalizedAxis(4, TechConstants.kJoystickDeadband), true);
+                        mPeriodicIO.driveDemand = new HolonomicDriveSignal(driverController.getLeftJoystickVector().scale(0.25), 
+                                                                           driverController.getNormalizedAxis(2, TechConstants.kJoystickDeadband), true);
                                                                             
                         //mPeriodicIO.driveDemand = new HolonomicDriveSignal(new Vector2d(0, 0.5), 0.0, false);
 
@@ -324,6 +324,8 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
 
         }
 
+        //modules[0].setDesiredState(states[0]);
+
     }
 
 
@@ -386,9 +388,6 @@ public class SwerveDriveTrain extends Subsystem implements CustomSubsystem {
 
             //leftFront.setDesiredState(states[0]);
         }
-
-        
-
     }
 
     private synchronized void forceModules(SwerveModuleState state) {

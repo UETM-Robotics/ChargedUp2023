@@ -39,6 +39,7 @@ public class HIDController {
     private final Controllers controllers = Controllers.getInstance();
 
     private final ControllerU driverController;
+	private final ControllerU actualDriverCont;
 
     private final Object taskRunningLock_ = new Object();
 
@@ -78,7 +79,8 @@ public class HIDController {
 
     private HIDController() {
         mHIDNotifier = new Notifier(mHIDRunnable);
-		driverController = controllers.getDriverController();
+		driverController = controllers.getOpController();
+		actualDriverCont = controllers.getDriverController();
 		registerControls();
     }
 
@@ -204,14 +206,15 @@ public class HIDController {
 				new SetIntakeAction(state.EXTAKE, () -> j.getRawButton(b)), 300));
 		});
 
-		registerButtonPressControl(driverController, 1, (j, b) -> {
+		//Pivot
+		registerButtonPressControl(actualDriverCont, 6, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new SetActuatedAction(), 300));
+				new SetActuatedAction(() -> j.getRawButton(b), true), 300));
 		});
 
-		registerButtonPressControl(driverController, 2, (j, b) -> {
+		registerButtonPressControl(actualDriverCont , 5, (j, b) -> {
 			TeleopActionRunner.runAction(AutomatedAction.fromAction(
-				new SwapGamePiece(), 300));
+				new SetActuatedAction(() -> j.getRawButton(b), false), 300));
 		});
 
 		//Lift
@@ -247,18 +250,20 @@ public class HIDController {
 
 		mControlFunctions.add( () -> {
 
+			SmartDashboard.putNumber("aaaaa", controllers.getLiftMotor().getEncoder().getPosition());
+
 			SmartDashboard.putNumber("Robot Position X", RobotState.getInstance().getFieldToVehicleInches().getPose().x() );
 			SmartDashboard.putNumber("Robot Position Y", RobotState.getInstance().getFieldToVehicleInches().getPose().y() );
 			SmartDashboard.putNumber("Robot Position Theta", RobotState.getInstance().getFieldToVehicleInches().getRotation().getDegrees());
 			SmartDashboard.putNumber("FR", controllers.getCanCoderFR().getAbsolutePosition());
 			SmartDashboard.putNumber("FL", controllers.getCanCoderFL().getAbsolutePosition());
 			SmartDashboard.putNumber("BR", controllers.getCanCoderBR().getAbsolutePosition());
-			SmartDashboard.putNumber("BR RAD", controllers.getCanCoderBR().getAbsolutePosition() * Math.PI / 180);
+			SmartDashboard.putNumber("BR RAD", controllers.getCanCoderBR().getAbsolutePosition());
 			SmartDashboard.putNumber("BL", controllers.getCanCoderBL().getAbsolutePosition());
 
 			SmartDashboard.putNumber("SPARK FR", controllers.getRightFrontAngleMotor().getEncoder().getPosition());
 			SmartDashboard.putNumber("SPARK FL", controllers.getLeftFrontAngleMotor().getEncoder().getPosition());
-			SmartDashboard.putNumber("SPARK BR", controllers.getRightHindSwerveModuleU().getRot());
+			SmartDashboard.putNumber("SPARK BR", controllers.getRightHindAngleMotor().getEncoder().getPosition());
 			SmartDashboard.putNumber("SPARK BL", controllers.getLeftHindAngleMotor().getEncoder().getPosition());
 
 			/*SmartDashboard.putNumber("FR CALC", controllers.getRightFrontSwerveModuleU().calc());

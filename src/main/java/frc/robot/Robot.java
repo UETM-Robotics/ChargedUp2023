@@ -32,6 +32,7 @@ import frc.robot.Utilities.Constants.TechConstants;
 import frc.robot.Utilities.Geometry.Pose2d;
 import frc.robot.Utilities.Geometry.Rotation2d;
 //import frc.robot.Utilities.Swerve.SwerveModuleState;
+import frc.robot.Utilities.Swerve.SwerveModuleState;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -162,20 +163,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic()
   {
-    /*double numRots = 12 / (TechConstants.kDriveRotationsToInches / 12);
-
-    Controllers.getInstance().getLeftFrontThrottleMotor().set(0.5);
-    Controllers.getInstance().getRightFrontThrottleMotor().set(0.5);
-    Controllers.getInstance().getLeftHindThrottleMotor().set(0.5);
-    Controllers.getInstance().getRightHindThrottleMotor().set(0.5);
-
-    if(Controllers.getInstance().getLeftFrontThrottleMotor().getEncoder().getPosition() >= numRots)
-    {
-      Controllers.getInstance().getLeftFrontThrottleMotor().set(0);
-      Controllers.getInstance().getRightFrontThrottleMotor().set(0);
-      Controllers.getInstance().getLeftHindThrottleMotor().set(0);
-      Controllers.getInstance().getRightHindThrottleMotor().set(0);
-    }*/
+    
   }
 
   @Override

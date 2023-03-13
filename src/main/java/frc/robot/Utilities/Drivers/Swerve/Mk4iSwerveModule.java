@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.SynchronousPIDF;
 import frc.robot.Utilities.Constants.TechConstants;
 import frc.robot.Utilities.Drivers.SparkHelper;
@@ -57,7 +58,7 @@ public class Mk4iSwerveModule {
         //SparkHelper.setPIDGains(this.driveMotor, 0, TechConstants.kDriveVelocityKp, TechConstants.kDriveVelocityKi, TechConstants.kDriveVelocityKd, TechConstants.kDriveVelocityKf, 0);
 
         SparkHelper.setPIDGains(this.driveMotor, 0, TechConstants.kDriveVelocityKp, TechConstants.kDriveVelocityKi, TechConstants.kDriveVelocityKd, TechConstants.kDriveVelocityKf, TechConstants.kDriveVelocityRampRate, TechConstants.kDriveVelocityIZone);
-
+        
         // driveEncoder = driveMotor.getEncoder();
         // turningEncoder = turningMotor.getEncoder();
 
@@ -69,9 +70,11 @@ public class Mk4iSwerveModule {
         //turningPidController = new PIDController(ModuleConstants.kPTurning, 0, 0);
         turningPidController = new SynchronousPIDF(0.25, 0, 0.0);
 
-        //turningPidController.enableContinuousInput(-Math.PI, Math.PI);
-        turningPidController.setContinuous(false);
+        //turningPidController.enableContinuousInput(-Matph.PI, Math.PI);
+        turningPidController.setContinuous(true);
         turningPidController.setInputRange(-Math.PI, Math.PI);
+
+        //turningMotor.setIdleMode(com.revrobotics.CANSparkMax.IdleMode.kBrake);
         //turningMotor.setInverted(isreversed);
 
         //turningPidController.setDeadband(0.2);
@@ -207,10 +210,24 @@ public class Mk4iSwerveModule {
 
     public synchronized double getAbsoluteEncoderRad() {
         //double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
-        double angle = (turningMotor.getEncoder().getPosition() % 21.60509554140127) / 21.60509554140127;
-        //double angle = absoluteEncoder.getAbsolutePosition();
+        //double angle = (turningMotor.getEncoder().getPosition() % 21.60509554140127) / 21.60509554140127;
+        double angle = absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetRad;
 
-        angle *= 2.0 * Math.PI;// / 180;
+        if(angle > 180)
+        {
+            angle -= 360;
+        }
+
+        else if(angle < -180)
+        {
+            angle += 360;
+        }
+
+        angle = -angle;
+
+        //angle = angle / 360.0 * 21.60509554140127;
+
+        /*angle *= 2.0 * Math.PI;// / 180;
         //angle -= absoluteEncoderOffsetRad * Math.PI / 180;
 
         if(angle > Math.PI) {
@@ -226,7 +243,9 @@ public class Mk4iSwerveModule {
         //     angle = -(Math.PI - angle);
         // } else {
         //     angle -= Math.PI;
-        // }
+        // }*/
+
+        angle *= Math.PI / 180.0;
 
         return angle;
     }
@@ -234,6 +253,26 @@ public class Mk4iSwerveModule {
 
     public void resetEncoders() {
         driveMotor.resetEncoder();
+
+        double pos = absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetRad;
+
+        if(pos > 180)
+        {
+            pos -= 360;
+        }
+
+        else if(pos < -180)
+        {
+            pos += 360;
+        }
+
+        pos =  -pos;
+
+        pos = pos / 360.0 * 21.60509554140127;
+
+        //angle *= 2.0 * Math.PI;
+
+        turningMotor.getEncoder().setPosition(pos);
         //turningMotor.getEncoder().setPosition((absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetRad) % 21.60509554140127 / 21.60509554140127);
     }
 
@@ -251,7 +290,7 @@ public class Mk4iSwerveModule {
             if(mIdleMode == IdleMode.BRAKE) {
 
                 //state = SwerveModuleState.optimize(state, getState().angle);
-                state = SwerveModuleState.optimizeU(state, getState().angle);
+                //state = SwerveModuleState.optimizeU(state, getState().angle);
 
                 turningPidController.setSetpoint(state.angle.getRadians());
 
@@ -269,8 +308,7 @@ public class Mk4iSwerveModule {
         }
         
         //state = SwerveModuleState.optimize(state, getState().angle);
-        state = SwerveModuleState.optimizeU(state, getState().angle);
-
+        //state = SwerveModuleState.optimizeU(state, getState().angle);
 
         driveMotor.set(state.speedMetersPerSecond);
 
@@ -293,7 +331,7 @@ public class Mk4iSwerveModule {
             if(mIdleMode == IdleMode.BRAKE) {
 
                 //state = SwerveModuleState.optimize(state, getState().angle);
-                state = SwerveModuleState.optimizeU(state, getState().angle);
+                //state = SwerveModuleState.optimizeU(state, getState().angle);
 
                 turningPidController.setSetpoint(state.angle.getRadians());
 
@@ -311,7 +349,7 @@ public class Mk4iSwerveModule {
         }
         
         //state = SwerveModuleState.optimize(state, getState().angle);
-        state = SwerveModuleState.optimizeU(state, getState().angle);
+        //state = SwerveModuleState.optimizeU(state, getState().angle);
 
 
         if(usePID) {
@@ -334,7 +372,7 @@ public class Mk4iSwerveModule {
     public void forceDesiredState(SwerveModuleState state) {
         
         //state = SwerveModuleState.optimize(state, getState().angle);
-        state = SwerveModuleState.optimizeU(state, getState().angle);
+        //state = SwerveModuleState.optimizeU(state, getState().angle);
 
 
         driveMotor.set(state.speedMetersPerSecond);
@@ -345,7 +383,6 @@ public class Mk4iSwerveModule {
         turningMotor.set(turningPidController.calculate(getAbsoluteEncoderRad()));
 
     }
-
 
     public void stop() {
 

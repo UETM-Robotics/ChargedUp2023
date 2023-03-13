@@ -14,7 +14,6 @@ import frc.robot.Utilities.Drivers.Swerve.Mk4iSwerveModule;
 //import frc.robot.Utilities.Drivers.Swerve.SwerveModuleA;
 import frc.robot.Utilities.Drivers.rcinput.ControllerU;
 import frc.robot.Utilities.Geometry.Vector2d;
-import frc.robot.subsystems.SwerveModule;
 
 public class Controllers {
 
@@ -115,12 +114,12 @@ public class Controllers {
         //     new AnalogInput(3)
         // );
 
-
+        
         leftFrontModuleU = new Mk4iSwerveModule(
             leftFrontThrottleMotor, 
             leftFrontAngleMotor, 
             caNfl, 
-            190.01953125,
+            -40.166015625,
             true
         );
 
@@ -128,7 +127,7 @@ public class Controllers {
             rightFrontThrottleMotor, 
             rightFrontAngleMotor, 
             caNfr, 
-            203.73046875,
+            -91.0546875,
             true
         );
 
@@ -136,7 +135,7 @@ public class Controllers {
             leftHindThrottleMotor, 
             leftHindAngleMotor, 
             caNbl,
-            60.46875,
+            95.009765625,
             false
         );
 
@@ -144,7 +143,7 @@ public class Controllers {
             rightHindThrottleMotor, 
             rightHindAngleMotor,
             caNbr,
-            228.69140625,
+            162.509765625,
             false
         );
 
@@ -223,6 +222,7 @@ public class Controllers {
         );*/
 
         driverController = new ControllerU(0);
+        opController = new ControllerU(1);
     }
 
     private SparkMaxU leftFrontDriveMotor;
@@ -260,6 +260,7 @@ public class Controllers {
     
 
     private final ControllerU driverController;
+    private final ControllerU opController;
 
     public SparkMaxU getIntakeMotor()
     {
@@ -354,6 +355,10 @@ public class Controllers {
 
     public ControllerU getDriverController() {
         return driverController;
+    }
+
+    public ControllerU getOpController() {
+        return opController;
     }
 
     public CANCoder getCanCoderFR()

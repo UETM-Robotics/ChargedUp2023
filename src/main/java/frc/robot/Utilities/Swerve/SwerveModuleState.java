@@ -4,6 +4,7 @@
 
 package frc.robot.Utilities.Swerve;
 
+import frc.robot.Utilities.Drivers.SparkMaxU;
 import frc.robot.Utilities.Geometry.Rotation2d;
 import java.util.Objects;
 
@@ -87,7 +88,6 @@ public class SwerveModuleState implements Comparable<SwerveModuleState> {
     }
   }
 
-
   public static SwerveModuleState optimizeU (
       SwerveModuleState desiredState, Rotation2d currentAngle) {
 
@@ -129,7 +129,7 @@ public class SwerveModuleState implements Comparable<SwerveModuleState> {
           if(optionTwoError <= 0) {
             optionTwoError = optionTwoError + 2.0 * Math.PI;
           } else {
-            optionTwoError = optionTwoError -= 2.0 * Math.PI;
+            optionTwoError = optionTwoError - 2.0 * Math.PI;
           }
 
         }

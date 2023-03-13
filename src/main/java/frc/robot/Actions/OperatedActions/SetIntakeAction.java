@@ -38,14 +38,12 @@ public class SetIntakeAction implements Action
     public void done() {
         // TODO Auto-generated method stub
         intake.setState(state.DEACTIVE);
-        Controllers.getInstance().getDriverController().setRumble(0);
     }
 
     @Override
     public void start() {
         // TODO Auto-generated method stub
         intake.setState(state);
-        Controllers.getInstance().getDriverController().setRumble(0.4);
     }
     
 }

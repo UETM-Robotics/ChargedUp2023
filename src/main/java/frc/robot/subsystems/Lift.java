@@ -68,7 +68,7 @@ public class Lift extends Subsystem implements CustomSubsystem
                     break;
 
                 case HIGH:
-                    liftMotor.set(TechConstants.kHigh, ControlType.kSmartMotion);
+                    liftMotor.set(-72, ControlType.kSmartMotion);
                     break;
                 
                 case OPEN_LOOP_UP:

@@ -19,7 +19,8 @@ public class Intake extends Subsystem implements CustomSubsystem {
     private final SparkMaxU intakeMotor;
     private final SparkMaxU actuator;
     private state curState = state.DEACTIVE;
-    private boolean actuated;
+
+    private double actuatedVel = 0;
 
     private boolean isCube = true;
 
@@ -35,9 +36,16 @@ public class Intake extends Subsystem implements CustomSubsystem {
         intakeMotor = Controllers.getInstance().getIntakeMotor();
         actuator = Controllers.getInstance().getActuatorMotor();
 
-        SparkHelper.setPIDGains(actuator, 0, 0.001, 0, 0, 0.05);
+        SparkHelper.setPIDGains(actuator, 0, 0.000275, 0, 0, 0.005);
+        actuator.getPIDController().setSmartMotionMaxVelocity(50, 0);
+        actuator.getPIDController().setSmartMotionMaxAccel(50, 0);
+        actuator.getPIDController().setOutputRange(-0.6, 0.4);
 
-        actuated = false;
+        actuator.setOpenLoopRampRate(0.1);
+        actuator.setSmartCurrentLimit(30);
+
+        intakeMotor.setOpenLoopRampRate(0.15);
+        intakeMotor.setSmartCurrentLimit(40);
     }
 
     private final Loop mLoop = new Loop()
@@ -66,12 +74,12 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 
                     case INTAKE:
-                        intakeMotor.set(isCube ? 0.65 : -0.65);
+                        intakeMotor.set(0.75);
                         SmartDashboard.putString("State", "INTAKE");
                         break;
                 
                     case EXTAKE:
-                        intakeMotor.set(isCube ? -0.65 : 0.65);
+                        intakeMotor.set(-0.75);
                         SmartDashboard.putString("State", "EXTAKE");
                         break;
                 
@@ -82,23 +90,7 @@ public class Intake extends Subsystem implements CustomSubsystem {
                         break;
                 }
 
-                if(actuated)
-                {
-                    if(curState == state.EXTAKE)
-                    {
-                        actuator.set(0.3, ControlType.kSmartMotion);
-                    }
-
-                    else
-                    {
-                        actuator.set(9, ControlType.kSmartMotion);
-                    }
-                }
-
-                else
-                {
-                    actuator.set(0, ControlType.kSmartMotion);
-                }
+                actuator.set(-actuatedVel);
 
                 SmartDashboard.putNumber("Motor Val", intakeMotor.get());
             }
@@ -110,10 +102,10 @@ public class Intake extends Subsystem implements CustomSubsystem {
             
         }
     };
-
-    public void actuate()
+    
+    public void setVel(double output)
     {
-        actuated = !actuated;
+        actuatedVel = output;
     }
 
     public void setState(state newState)
